@@ -62,4 +62,31 @@ const initGame = () => {
         scoreElement.innerText = `Score : ${score}`;
         highScoreElement.innerText = `High Score : ${highScore}`;
     }
+
+    snakeX += veloCityX;
+    snakeY += velocityY;
+
+    //? Yılan gövdesindeki elemanların değerlerini birer birer ileri kaydırıyoruz;
+    for (let i = snakeBody.length - 1; i > 0; i--) {
+        snakeBody[i] = snakeBody[i - 1];
+    }
+    snakeBody[0] = [snakeX, snakeY];
+
+    //? Yılanın kafasının duvardan çıkıp çıkmadığını kontrol ediyoruz, eğer öyleyse gameOver'ı true olarak ayarlıyoruz;
+
+    for (let i = 0; i < snakeBody.length; i++) {
+        html += `<div class="head" style="grid-area: ${snakeBody[i][1]} / ${snakeBody[i][0]}"></div>`;
+
+        //? // Yılan kafasının gövdeye çarpıp çarpmadığını kontrol ediyoruz, öyleyse gameOver'ı true olarak ayarlıyoruz;
+
+        if (i !== 0 && snakeBody[0][1] === snakeBody[i][1] && snakeBody[0][0] === snakeBody[i][0]) {
+            gameOver = true;
+        }
+    }
+
+    playBoard.innerHTML = html;
 }
+
+updateFoodPosition();
+setIntervalId = setInterval(initGame, 100);
+document.addEventListener("keyup", chanceDirection);
